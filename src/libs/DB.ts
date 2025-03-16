@@ -1,43 +1,30 @@
-import type { PgliteDatabase } from 'drizzle-orm/pglite';
-import path from 'node:path';
 import * as schema from '@/models/Schema';
-import { PGlite } from '@electric-sql/pglite';
 import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
 import { migrate as migratePg } from 'drizzle-orm/node-postgres/migrator';
-import { drizzle as drizzlePglite } from 'drizzle-orm/pglite';
-import { migrate as migratePglite } from 'drizzle-orm/pglite/migrator';
-import { PHASE_PRODUCTION_BUILD } from 'next/dist/shared/lib/constants';
 import { Client } from 'pg';
 import { Env } from './Env';
 
 let client;
 let drizzle;
 
-if (process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD && Env.DATABASE_URL) {
+const isProduction = Env.NODE_ENV === 'production';
+const isTest = Env.NODE_ENV === 'test';
+
+if (!isTest && Env.DATABASE_URL) {
   client = new Client({
     connectionString: Env.DATABASE_URL,
   });
   await client.connect();
 
   drizzle = drizzlePg(client, { schema });
-  await migratePg(drizzle, {
-    migrationsFolder: path.join(process.cwd(), 'migrations'),
-  });
-} else {
-  // Stores the db connection in the global scope to prevent multiple instances due to hot reloading with Next.js
-  const global = globalThis as unknown as { client: PGlite; drizzle: PgliteDatabase<typeof schema> };
 
-  if (!global.client) {
-    global.client = new PGlite();
-    await global.client.waitReady;
-
-    global.drizzle = drizzlePglite(global.client, { schema });
+  if (!isProduction) {
+    await migratePg(drizzle, {
+      migrationsFolder: './migrations',
+    });
   }
-
-  drizzle = global.drizzle;
-  await migratePglite(global.drizzle, {
-    migrationsFolder: path.join(process.cwd(), 'migrations'),
-  });
+} else {
+  throw new Error('DATABASE_URL is missing. Make sure to set it in your .env files.');
 }
 
 export const db = drizzle;

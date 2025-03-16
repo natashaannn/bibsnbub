@@ -1,3 +1,10 @@
+# 1.0.0 (2025-03-16)
+
+
+### Features
+
+* customize boilerplate to project needs ([bdbed18](https://github.com/natashaannn/bibsnbub/commit/bdbed18aec380f16290b1c1332558eae71261fa3))
+
 ## [3.64.1](https://github.com/ixartz/Next-js-Boilerplate/compare/v3.64.0...v3.64.1) (2025-03-13)
 
 

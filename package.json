@@ -1,6 +1,6 @@
 {
   "name": "bibsnbub",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "Natasha Ann (https://github.com/natashaannn)",
   "engines": {
     "node": ">=20"

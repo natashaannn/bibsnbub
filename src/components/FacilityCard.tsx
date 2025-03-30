@@ -12,6 +12,7 @@ type FacilityCardProps = {
     outlet: boolean;
     wastebasket: boolean;
     waitingArea: boolean;
+    privateNursingArea: boolean;
   };
 };
 

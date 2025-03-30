@@ -1,4 +1,4 @@
-import { Coffee, Plug, ShowerHead, Sofa, Trash2 } from 'lucide-react';
+import { Coffee, Milk, Plug, ShowerHead, Sofa, Trash2 } from 'lucide-react';
 
 type AmenityIconsProps = {
   amenities: {
@@ -7,6 +7,7 @@ type AmenityIconsProps = {
     outlet: boolean;
     wastebasket: boolean;
     waitingArea: boolean;
+    privateNursingArea: boolean;
   };
 };
 
@@ -18,6 +19,7 @@ export default function AmenityIcons({ amenities }: AmenityIconsProps) {
       {amenities.outlet && <Plug size={20} />}
       {amenities.wastebasket && <Trash2 size={20} />}
       {amenities.waitingArea && <Sofa size={20} />}
+      {amenities.privateNursingArea && <Milk size={20} />}
     </div>
   );
 }

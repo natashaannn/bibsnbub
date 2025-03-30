@@ -1,14 +1,17 @@
-// import { createClient } from '@supabase/supabase-js';
+'use client';
+
 import CategoryScroller from '@/components/CategoryScroller';
 import FacilityCard from '@/components/FacilityCard';
 import SearchBar from '@/components/SearchBar';
 import { calculateDistance } from '@/lib/utils';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
-// Mock user location (Replace with actual geolocation API)
+// Mock user location
 const userLat = 1.3521;
 const userLng = 103.8198;
 
+// Mock facilities
 const mockFacilities = [
   {
     id: 1,
@@ -23,6 +26,7 @@ const mockFacilities = [
       outlet: true,
       wastebasket: true,
       waitingArea: false,
+      privateNursingArea: true,
     },
   },
   {
@@ -38,13 +42,24 @@ const mockFacilities = [
       outlet: false,
       wastebasket: true,
       waitingArea: true,
+      privateNursingArea: false,
     },
   },
 ];
 
-export default async function Page(props: { params: { locale: string } }) {
-  const { locale } = props.params;
-  const t = await getTranslations({ locale, namespace: 'Index' });
+export default function Page() {
+  const t = useTranslations('Index');
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const filteredFacilities = mockFacilities.filter((facility) => {
+    if (selectedCategory === 'changing') {
+      return facility.amenities.changingTable;
+    } else if (selectedCategory === 'nursing') {
+      return facility.amenities.privateNursingArea;
+    }
+    return true;
+  });
 
   return (
     <div className="py-5 text-xl">
@@ -54,10 +69,10 @@ export default async function Page(props: { params: { locale: string } }) {
       </div>
 
       <SearchBar />
-      <CategoryScroller />
+      <CategoryScroller onCategorySelect={setSelectedCategory} />
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {mockFacilities.map(facility => (
+      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+        {filteredFacilities.map(facility => (
           <FacilityCard
             key={facility.id}
             name={facility.name}

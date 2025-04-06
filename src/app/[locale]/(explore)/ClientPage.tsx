@@ -27,10 +27,10 @@ export default function ClientPage({
   }, []);
 
   const filteredFacilities = facilitiesData?.filter((facility) => {
-    if (selectedCategory === 'changing') {
-      return [2, 3, 4, 5].includes(facility.facility_type_id);
-    } else if (selectedCategory === 'nursing') {
-      return [1, 3].includes(facility.facility_type_id);
+    if (selectedCategory === 'Diaper Changing Station') {
+      return facility.has_diaper_changing_station;
+    } else if (selectedCategory === 'Lactation Room') {
+      return facility.has_lactation_room;
     }
     return true;
   });

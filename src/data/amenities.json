@@ -1,0 +1,9 @@
+[
+  { "name": "Sink", "description": "Water sink available" },
+  { "name": "Hot Water Dispenser", "description": "Provides hot water for feeding" },
+  { "name": "Changing Table", "description": "Flat surface for diaper changes" },
+  { "name": "Nursing Chair", "description": "Comfortable chair for nursing" },
+  { "name": "Electrical Outlet", "description": "Power socket for breast pumps" },
+  { "name": "Lactation Room", "description": "Private space for breastfeeding or pumping" },
+  { "name": "Diaper Changing Station", "description": "Wall-mounted or room changing station" }
+]

@@ -34,6 +34,8 @@ export const facilities = pgTable('facilities', {
   isAccessible: boolean('is_accessible').default(false),
   description: text('description'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
+  hasDiaperChangingStation: boolean('has_diaper_changing_station').default(true),
+  hasLactationRoom: boolean('has_lactation_room').default(false),
 });
 
 // --- Facility <-> Amenities Many-to-Many Join Table ---

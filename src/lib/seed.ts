@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { db, dbClient } from '@/libs/DB';
 import {
   amenities,
@@ -7,6 +9,12 @@ import {
   locations,
 } from '@/models/Schema';
 import { sql } from 'drizzle-orm';
+
+async function loadJSON<T>(filename: string): Promise<T> {
+  const filePath = path.join(process.cwd(), 'src/data', filename);
+  const raw = await fs.readFile(filePath, 'utf-8');
+  return JSON.parse(raw);
+}
 
 async function resetSequences() {
   await db.execute(sql`ALTER SEQUENCE locations_id_seq RESTART WITH 1`);
@@ -26,93 +34,59 @@ async function seed() {
   await resetSequences();
 
   console.warn('🌱 Seeding data...');
-  const [location] = await db.insert(locations).values({
-    name: 'Sunshine Mall',
-    address: '123 Sunshine St, City, Country',
-    latitude: '1.2935',
-    longitude: '103.845',
-    description: 'A popular mall with baby-friendly facilities.',
-  }).returning();
 
-  if (!location) {
-    throw new Error('Failed to insert location!');
-  }
+  const locationData = await loadJSON<any[]>('locations.json');
+  const insertedLocations = await db.insert(locations).values(locationData).returning();
+  const locationMap = Object.fromEntries(insertedLocations.map(l => [l.name, l.id]));
 
-  await db.insert(facilityTypes).values([
-    { name: 'Lactation Room', description: 'Private space for breastfeeding or pumping' },
-    { name: 'Diaper Changing Station', description: 'Surface for changing baby diapers' },
-    { name: 'Baby Care Room', description: 'Room equipped for baby care needs' },
-    { name: 'Accessible Toilet', description: 'Toilet accessible for wheelchair users' },
-    { name: 'Communal Toilet', description: 'Shared restroom space' },
-  ]);
+  const facilityTypeData = await loadJSON<any[]>('facilityTypes.json');
+  const insertedTypes = await db.insert(facilityTypes).values(facilityTypeData).returning();
+  const typeMap = Object.fromEntries(insertedTypes.map(t => [t.name, t.id]));
 
-  const facilityTypeRecords = await db.select().from(facilityTypes);
-  const getFacilityTypeId = (name: string) => facilityTypeRecords.find(f => f.name === name)?.id;
+  const amenityData = await loadJSON<any[]>('amenities.json');
+  const insertedAmenities = await db.insert(amenities).values(amenityData).returning();
+  const amenityMap = Object.fromEntries(insertedAmenities.map(a => [a.name, a.id]));
 
-  await db.insert(amenities).values([
-    { name: 'Sink', description: 'Water sink available' },
-    { name: 'Hot Water Dispenser', description: 'Provides hot water for feeding' },
-    { name: 'Changing Table', description: 'Flat surface for diaper changes' },
-    { name: 'Nursing Chair', description: 'Comfortable chair for nursing' },
-    { name: 'Electrical Outlet', description: 'Power socket for breast pumps' },
-  ]);
+  const facilityData = await loadJSON<any[]>('facilities.json');
+  const facilitiesToInsert = facilityData
+    .map((f) => {
+      const locationId = locationMap[f.locationName];
+      const facilityTypeId = typeMap[f.facilityTypeName];
 
-  const amenityRecords = await db.select().from(amenities);
-  const getAmenityId = (name: string) => amenityRecords.find(a => a.name === name)?.id;
+      if (locationId === undefined) {
+        console.error(`Unknown locationName: ${f.locationName}`);
+      }
+      if (facilityTypeId === undefined) {
+        console.error(`Unknown facilityTypeName: ${f.facilityTypeName}`);
+      }
 
-  await db.insert(facilities).values([
-    {
-      locationId: location.id,
-      facilityTypeId: getFacilityTypeId('Lactation Room')!,
-      floor: '2',
-      isAccessible: true,
-      description: 'Private lactation room with chair, outlet and sink',
-    },
-    {
-      locationId: location.id,
-      facilityTypeId: getFacilityTypeId('Diaper Changing Station')!,
-      floor: '2',
-      isAccessible: true,
-      description: 'Wall-mounted changing station in the restroom',
-    },
-    {
-      locationId: location.id,
-      facilityTypeId: getFacilityTypeId('Baby Care Room')!,
-      floor: '3',
-      isAccessible: false,
-      description: 'Baby room with both lactation and diaper changing facilities',
-    },
-  ]);
+      return locationId !== undefined && facilityTypeId !== undefined
+        ? {
+            locationId,
+            facilityTypeId,
+            floor: f.floor,
+            isAccessible: f.isAccessible,
+            description: f.description,
+            hasDiaperChangingStation: f.hasDiaperChangingStation ?? false,
+            hasLactationRoom: f.hasLactationRoom ?? false,
+          }
+        : null;
+    })
+    .filter((f): f is NonNullable<typeof f> => f !== null); // type guard
 
-  const facilityRecords = await db.select().from(facilities);
-  const getFacilityId = (description: string) => facilityRecords.find(f => f.description?.includes(description))?.id;
+  const insertedFacilities = await db.insert(facilities).values(facilitiesToInsert).returning();
 
-  await db.insert(facilityAmenities).values([
-    {
-      facilityId: getFacilityId('Private lactation room')!,
-      amenityId: getAmenityId('Nursing Chair')!,
-    },
-    {
-      facilityId: getFacilityId('Private lactation room')!,
-      amenityId: getAmenityId('Electrical Outlet')!,
-    },
-    {
-      facilityId: getFacilityId('Private lactation room')!,
-      amenityId: getAmenityId('Sink')!,
-    },
-    {
-      facilityId: getFacilityId('Wall-mounted changing station')!,
-      amenityId: getAmenityId('Changing Table')!,
-    },
-    {
-      facilityId: getFacilityId('Baby room with both lactation and diaper changing facilities')!,
-      amenityId: getAmenityId('Changing Table')!,
-    },
-    {
-      facilityId: getFacilityId('Baby room with both lactation and diaper changing facilities')!,
-      amenityId: getAmenityId('Hot Water Dispenser')!,
-    },
-  ]);
+  const facilityMap = Object.fromEntries(insertedFacilities.map(f => [f.description, f.id]));
+
+  const facilityAmenityData = await loadJSON<any[]>('facilityAmenities.json');
+  await db.insert(facilityAmenities).values(
+    facilityAmenityData.flatMap(f =>
+      f.amenities.map((a: string) => ({
+        facilityId: facilityMap[f.facilityDesc],
+        amenityId: amenityMap[a],
+      })),
+    ),
+  );
 
   console.warn('✅ Seed data inserted successfully!');
   await dbClient.end();

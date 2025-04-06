@@ -1,0 +1,65 @@
+[
+  {
+    "locationName": "Sunshine Mall",
+    "facilityTypeName": "Baby Room",
+    "floor": "L2",
+    "isAccessible": true,
+    "description": "Next to 7 Eleven",
+    "hasDiaperChangingStation": true,
+    "hasLactationRoom": true
+  },
+  {
+    "locationName": "Sunshine Mall",
+    "facilityTypeName": "Accessible Restroom",
+    "floor": "B1",
+    "isAccessible": true,
+    "description": "Near food court entrance",
+    "hasDiaperChangingStation": true,
+    "hasLactationRoom": false
+  },
+  {
+    "locationName": "Sunshine Mall",
+    "facilityTypeName": "Ladies' Restroom",
+    "floor": "L1",
+    "isAccessible": false,
+    "description": "Behind Uniqlo store",
+    "hasDiaperChangingStation": true,
+    "hasLactationRoom": false
+  },
+  {
+    "locationName": "Sunshine Mall",
+    "facilityTypeName": "Lactation Room",
+    "floor": "4",
+    "isAccessible": false,
+    "description": "Beside Kiddy Palace",
+    "hasDiaperChangingStation": true,
+    "hasLactationRoom": true
+  },
+  {
+    "locationName": "Sunshine Mall",
+    "facilityTypeName": "Family Restroom",
+    "floor": "L1",
+    "isAccessible": true,
+    "description": "Next to Guardian Pharmacy",
+    "hasDiaperChangingStation": true,
+    "hasLactationRoom": false
+  },
+  {
+    "locationName": "Moonlight Plaza",
+    "facilityTypeName": "Men's Restroom",
+    "floor": "B4",
+    "isAccessible": true,
+    "description": "Beside lift lobby D",
+    "hasDiaperChangingStation": true,
+    "hasLactationRoom": false
+  },
+  {
+    "locationName": "Moonlight Plaza",
+    "facilityTypeName": "Diaper Changing Station",
+    "floor": "L3",
+    "isAccessible": false,
+    "description": "Outside cinema entrance",
+    "hasDiaperChangingStation": true,
+    "hasLactationRoom": false
+  }
+]

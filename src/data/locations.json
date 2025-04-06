@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Sunshine Mall",
+    "address": "123 Sunshine St, City, Country",
+    "latitude": "1.2935",
+    "longitude": "103.845",
+    "description": "A popular mall with baby-friendly facilities."
+  },
+  {
+    "name": "Moonlight Plaza",
+    "address": "456 Moonlight Rd, City, Country",
+    "latitude": "1.3055",
+    "longitude": "103.832",
+    "description": "A spacious shopping center known for accessibility."
+  }
+]

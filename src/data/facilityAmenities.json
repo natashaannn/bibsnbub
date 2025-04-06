@@ -1,0 +1,8 @@
+[
+  { "facilityDesc": "Next to 7 Eleven", "amenities": ["Lactation Room", "Nursing Chair", "Changing Table"] },
+  { "facilityDesc": "Near food court entrance", "amenities": ["Diaper Changing Station"] },
+  { "facilityDesc": "Behind Uniqlo store", "amenities": ["Sink"] },
+  { "facilityDesc": "Next to Guardian Pharmacy", "amenities": ["Lactation Room", "Hot Water Dispenser"] },
+  { "facilityDesc": "Beside lift lobby D", "amenities": ["Diaper Changing Station"] },
+  { "facilityDesc": "Outside cinema entrance", "amenities": ["Electrical Outlet"] }
+]

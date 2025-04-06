@@ -1,0 +1,9 @@
+[
+  { "name": "Lactation Room", "description": "Private space for breastfeeding or pumping" },
+  { "name": "Diaper Changing Station", "description": "Wall-mounted or room changing station" },
+  { "name": "Baby Room", "description": "Room equipped for baby care needs" },
+  { "name": "Accessible Restroom", "description": "Toilet accessible for wheelchair users" },
+  { "name": "Family Restroom", "description": "Restroom for parents with children" },
+  { "name": "Ladies' Restroom", "description": "Restroom for women" },
+  { "name": "Men's Restroom", "description": "Restroom for men" }
+]

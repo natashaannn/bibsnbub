@@ -8,11 +8,22 @@ export type Location = {
   createdAt: Date;
 };
 
+export type Amenity = {
+  id: number;
+  name: string;
+  description: string | null;
+};
+
 export type Facility = {
   id: number;
   location_id: number;
-  floor: string | null;
   facility_type_id: number;
+  floor: string;
+  is_accessible: boolean;
+  description: string | null;
+  has_diaper_changing_station: boolean;
+  has_lactation_room: boolean;
+  amenities?: Amenity[];
 };
 
 export type FacilityType = {

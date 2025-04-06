@@ -1,8 +1,10 @@
 import * as schema from '@/models/Schema';
 import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
 import { migrate as migratePg } from 'drizzle-orm/node-postgres/migrator';
-import { Client } from 'pg';
+import pg from 'pg';
 import { Env } from './Env';
+
+const { Client } = pg;
 
 let client;
 let drizzle;
@@ -28,3 +30,4 @@ if (!isTest && Env.DATABASE_URL) {
 }
 
 export const db = drizzle;
+export const dbClient = client;

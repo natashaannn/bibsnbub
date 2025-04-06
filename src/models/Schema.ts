@@ -1,50 +1,43 @@
-import { boolean, integer, pgTable, primaryKey, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { boolean, integer, numeric, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-// This file defines the structure of your database tables using the Drizzle ORM.
-
-// To modify the database schema:
-// 1. Update this file with your desired changes.
-// 2. Generate a new migration by running: `npm run db:generate`
-
-// The generated migration file will reflect your schema changes.
-// The migration is automatically applied during the next database interaction,
-// so there's no need to run it manually or restart the Next.js server.
-
-// 1️⃣ Locations table (nursing & family rooms)
+// --- Location Table ---
 export const locations = pgTable('locations', {
   id: serial('id').primaryKey(),
-  name: varchar('name', '255').notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
   description: text('description'),
   address: text('address').notNull(),
-  latitude: text('latitude').notNull(),
-  longitude: text('longitude').notNull(),
-  accessible: boolean('accessible').default(false),
-  hasChangingTable: boolean('has_changing_table').default(false),
-  hasPrivateNursingArea: boolean('has_private_nursing_area').default(false),
-  rating: integer('rating').default(0),
+  latitude: numeric('latitude', { precision: 9, scale: 6 }).notNull(),
+  longitude: numeric('longitude', { precision: 9, scale: 6 }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-// 2️⃣ Reviews table (user-submitted ratings & comments)
-export const reviews = pgTable('reviews', {
+// --- Facility Types ---
+export const facilityTypes = pgTable('facility_types', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  description: text('description'),
+});
+
+// --- Amenities ---
+export const amenities = pgTable('amenities', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  description: text('description'),
+});
+
+// --- Facilities ---
+export const facilities = pgTable('facilities', {
   id: serial('id').primaryKey(),
   locationId: integer('location_id').notNull().references(() => locations.id, { onDelete: 'cascade' }),
-  userId: text('user_id').notNull(), // Clerk's user ID
-  rating: integer('rating').notNull().default(3),
-  comment: text('comment'),
+  facilityTypeId: integer('facility_type_id').notNull().references(() => facilityTypes.id, { onDelete: 'cascade' }),
+  floor: varchar('floor', { length: 50 }),
+  isAccessible: boolean('is_accessible').default(false),
+  description: text('description'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-// 3️⃣ Favorites table (allow users to save locations)
-export const favorites = pgTable(
-  'favorites',
-  {
-    userId: text('user_id').notNull(),
-    locationId: integer('location_id').notNull().references(() => locations.id, { onDelete: 'cascade' }),
-  },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.userId, table.locationId] }),
-    };
-  },
-);
+// --- Facility <-> Amenities Many-to-Many Join Table ---
+export const facilityAmenities = pgTable('facility_amenities', {
+  facilityId: integer('facility_id').notNull().references(() => facilities.id, { onDelete: 'cascade' }),
+  amenityId: integer('amenity_id').notNull().references(() => amenities.id, { onDelete: 'cascade' }),
+});

@@ -1,19 +1,20 @@
 'use client';
 
+import type { IconNode } from 'lucide-react';
 import CategoryItem from '@/components/CategoryItem';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Baby, Milk } from 'lucide-react';
+import { bottleBaby, diaper } from '@lucide/lab';
 import { useState } from 'react';
 
 type Category = {
   label: string;
-  Icon: typeof Baby;
+  iconNode: IconNode;
   value: string;
 };
 
 const categories: Category[] = [
-  { label: 'Changing Room', Icon: Baby, value: 'changing' },
-  { label: 'Nursing Room', Icon: Milk, value: 'nursing' },
+  { label: 'Changing Room', iconNode: diaper, value: 'changing' },
+  { label: 'Nursing Room', iconNode: bottleBaby, value: 'nursing' },
 ];
 
 type CategoryScrollerProps = {
@@ -36,7 +37,7 @@ const CategoryScroller = ({ onCategorySelect }: CategoryScrollerProps) => {
           <CategoryItem
             key={category.label}
             label={category.label}
-            Icon={category.Icon}
+            iconNode={category.iconNode}
             selected={selectedCategory === category.value}
             onClick={() => handleCategoryClick(category.value)}
           />

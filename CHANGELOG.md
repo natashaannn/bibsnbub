@@ -1,3 +1,23 @@
+# [2.0.0](https://github.com/natashaannn/bibsnbub/compare/v1.0.0...v2.0.0) (2025-04-29)
+
+
+### Bug Fixes
+
+* audit package vulnerabilities ([b290eba](https://github.com/natashaannn/bibsnbub/commit/b290eba595e6b5f80c559cf90fa05b9e0fcd6484))
+
+
+### Features
+
+* **database:** update schema for multiple facilities and facility types in one location ([02d441f](https://github.com/natashaannn/bibsnbub/commit/02d441ff988bf2eab5f99e92a0336a2f944e9091))
+* **database:** update schema to sort by diaper change and lactation rooms ([f11539b](https://github.com/natashaannn/bibsnbub/commit/f11539b64c9c9b411a1d38163284894d2d8087c0))
+* **explore:** add facility cards with mock data ([2dcdba0](https://github.com/natashaannn/bibsnbub/commit/2dcdba0c800337a9b3e902d503604e06017f76e2))
+* **explore:** add filter facilities by category function ([58e23c8](https://github.com/natashaannn/bibsnbub/commit/58e23c857b0d5193302993e6fe87203c5f55dc8f))
+
+
+### BREAKING CHANGES
+
+* **database:** new schema not compatible with previous facilitycard
+
 # 1.0.0 (2025-03-16)
 
 

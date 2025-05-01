@@ -39,7 +39,7 @@ const FacilityCard: React.FC<FacilityCardProps> = ({ location, facilityType, lat
     }
   };
 
-  const distance = calculateDistance(latitude, longitude, location.latitude, location.longitude);
+  const distance = calculateDistance(latitude, longitude, location.latitude, location.longitude).toFixed(1);
 
   return (
     <div className="border rounded-lg p-4 shadow-md bg-white flex items-center">
@@ -53,6 +53,8 @@ const FacilityCard: React.FC<FacilityCardProps> = ({ location, facilityType, lat
         <div className="text-gray-600 flex items-center mt-2">
           <MapPin className="w-4 h-4 mr-1" />
           {distance}
+          <span className="mx-0.5"></span>
+          km
         </div>
       </div>
     </div>

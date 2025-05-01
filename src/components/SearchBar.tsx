@@ -1,35 +1,150 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { MapPin, SlidersHorizontal } from 'lucide-react';
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { Navigation, SearchX } from 'lucide-react';
 import { useState } from 'react';
 
-export const SearchBar = () => {
+type SearchBarProps = {
+  onSearch: (latitude: number, longitude: number) => void;
+  onUseCurrentLocation: () => void;
+};
+
+export const SearchBar = ({ onSearch, onUseCurrentLocation }: SearchBarProps) => {
   const [location, setLocation] = useState('');
+  const [suggestions, setSuggestions] = useState<{ address: string; latitude: number; longitude: number }[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isUsingCurrentLocation, setIsUsingCurrentLocation] = useState(false);
+
+  const authToken = process.env.ONEMAP_API_KEY || '';
+
+  const fetchSuggestions = async (query: string) => {
+    if (!query.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${query}&returnGeom=Y&getAddrDetails=Y&pageNum=1`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: authToken,
+          },
+        },
+      );
+      const data = await response.json();
+      if (data.results) {
+        setSuggestions(
+          data.results.map((result: any) => ({
+            address: result.ADDRESS,
+            latitude: Number.parseFloat(result.LATITUDE),
+            longitude: Number.parseFloat(result.LONGITUDE),
+          })),
+        );
+      }
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
+
+  const handleSuggestionClick = (latitude: number, longitude: number, address: string) => {
+    setLocation(address);
+    setIsUsingCurrentLocation(false);
+    onSearch(latitude, longitude);
+    setSuggestions([]);
+    setIsOpen(false);
+  };
+
+  const handleUseCurrentLocation = () => {
+    setLocation('Your location');
+    setIsUsingCurrentLocation(true);
+    onUseCurrentLocation();
+    setIsOpen(false);
+  };
+
+  const clearInput = () => {
+    setLocation('');
+    setSuggestions([]);
+    setIsUsingCurrentLocation(false);
+  };
 
   return (
-    <div className="flex w-full max-w-3xl items-center justify-between gap-2 rounded-full border border-gray-300 bg-white p-2 shadow-md">
-      {/* Location Input */}
-      <div className="flex w-full items-center gap-2 px-4">
-        <MapPin className="h-5 w-5 text-gray-500" />
-        <Input
-          placeholder="Enter location"
+    <div className="relative w-full max-w-3xl">
+      {/* Search Bar */}
+      <Command className="rounded-lg border shadow-md md:min-w-[450px]" onClick={() => setIsOpen(true)}>
+        <CommandInput
+          placeholder="Search for a location..."
           value={location}
-          onChange={e => setLocation(e.target.value)}
-          className="border-none focus:ring-0"
+          onValueChange={(value) => {
+            setLocation(value);
+            fetchSuggestions(value);
+            setIsOpen(true);
+            setIsUsingCurrentLocation(false);
+          }}
+          className={`w-full border-none focus:ring-0 ${
+            isUsingCurrentLocation ? 'text-blue-400' : ''
+          }`}
         />
-      </div>
+      </Command>
 
-      {/* Filters Button */}
-      <Button variant="ghost" className="flex items-center gap-2 px-4">
-        <SlidersHorizontal className="h-5 w-5 text-gray-500" />
-        Filters
-      </Button>
+      <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
+        <CommandInput
+          placeholder="Search for a location..."
+          value={location}
+          onValueChange={(value) => {
+            setLocation(value);
+            fetchSuggestions(value);
+            setIsUsingCurrentLocation(false);
+          }}
+        />
+        <CommandList>
+          <div className="px-2 py-1">
+            <button
+              type="button"
+              className="flex items-center gap-2 cursor-pointer rounded-md px-2 py-2 text-sm hover:bg-gray-100"
+              onClick={clearInput}
+            >
+              <SearchX className="h-4 w-4 text-gray-500" />
+              <span>Clear location</span>
+            </button>
+            {location.trim() === '' && (
+              <button
+                type="button"
+                className="flex items-center gap-2 cursor-pointer rounded-md px-2 py-2 text-sm hover:bg-gray-100"
+                onClick={handleUseCurrentLocation}
+              >
+                <Navigation className="h-4 w-4 text-gray-500" />
+                <span>Use Current Location</span>
+              </button>
+            )}
+          </div>
 
-      {/* Search Button */}
-      <Button className="rounded-full bg-blue-600 px-6 text-white hover:bg-blue-700">
-        Search
-      </Button>
+          <CommandGroup heading="Suggestions">
+            {suggestions.length > 0
+              ? (
+                  suggestions.map(suggestion => (
+                    <CommandItem
+                      key={suggestion.address}
+                      onSelect={() => handleSuggestionClick(suggestion.latitude, suggestion.longitude, suggestion.address)}
+                    >
+                      {suggestion.address}
+                    </CommandItem>
+                  ))
+                )
+              : (
+                  <CommandEmpty>No results found.</CommandEmpty>
+                )}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </div>
   );
 };

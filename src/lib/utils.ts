@@ -22,7 +22,7 @@ export const calculateDistance = (userLat: number, userLon: number, locLat: numb
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = R * c;
-  return `${distance.toFixed(1)} km`;
+  return distance;
 };
 
 export async function fetchTranslations(locale: string) {

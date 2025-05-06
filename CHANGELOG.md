@@ -1,3 +1,11 @@
+# [2.1.0](https://github.com/natashaannn/bibsnbub/compare/v2.0.0...v2.1.0) (2025-05-06)
+
+
+### Features
+
+* **explore:** add facility page ([876ac5d](https://github.com/natashaannn/bibsnbub/commit/876ac5dfbac8ec9f1a1c47dceef98c18f6a51761))
+* **explore:** enhance searchbar functionality and improve location handling ([190bc98](https://github.com/natashaannn/bibsnbub/commit/190bc98ec1a914900208d80f243e715404860fca))
+
 # [2.0.0](https://github.com/natashaannn/bibsnbub/compare/v1.0.0...v2.0.0) (2025-04-29)
 
 

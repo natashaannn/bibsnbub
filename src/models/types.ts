@@ -1,7 +1,6 @@
 export type Location = {
   id: number;
   name: string;
-  description: string | null;
   address: string;
   latitude: number;
   longitude: number;
@@ -12,6 +11,7 @@ export type Amenity = {
   id: number;
   name: string;
   description: string | null;
+  is_multiple_applicable: boolean;
 };
 
 export type Facility = {

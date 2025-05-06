@@ -1,10 +1,9 @@
-import { boolean, integer, numeric, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { boolean, integer, numeric, pgTable, primaryKey, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 // --- Location Table ---
 export const locations = pgTable('locations', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
-  description: text('description'),
   address: text('address').notNull(),
   latitude: numeric('latitude', { precision: 9, scale: 6 }).notNull(),
   longitude: numeric('longitude', { precision: 9, scale: 6 }).notNull(),
@@ -23,6 +22,7 @@ export const amenities = pgTable('amenities', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   description: text('description'),
+  isMultipleApplicable: boolean('is_multiple_applicable').default(true), // New column
 });
 
 // --- Facilities ---
@@ -42,4 +42,5 @@ export const facilities = pgTable('facilities', {
 export const facilityAmenities = pgTable('facility_amenities', {
   facilityId: integer('facility_id').notNull().references(() => facilities.id, { onDelete: 'cascade' }),
   amenityId: integer('amenity_id').notNull().references(() => amenities.id, { onDelete: 'cascade' }),
-});
+  quantity: integer('quantity').default(1),
+}, table => [primaryKey({ columns: [table.facilityId, table.amenityId] })]);

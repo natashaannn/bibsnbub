@@ -1,16 +1,20 @@
 [
   {
-    "name": "Sunshine Mall",
-    "address": "123 Sunshine St, City, Country",
-    "latitude": "1.2935",
-    "longitude": "103.845",
-    "description": "A popular mall with baby-friendly facilities."
+    "name": "Hillion Mall",
+    "address": "17 Petir Rd, Singapore 678278",
+    "latitude": "1.3793",
+    "longitude": "103.7633"
   },
   {
-    "name": "Moonlight Plaza",
-    "address": "456 Moonlight Rd, City, Country",
-    "latitude": "1.3055",
-    "longitude": "103.832",
-    "description": "A spacious shopping center known for accessibility."
+    "name": "Junction 10",
+    "address": "1 Woodlands Rd, Singapore 677899",
+    "latitude": "1.3784",
+    "longitude": "103.7622"
+  },
+  {
+    "name": "Bukit Panjang Plaza",
+    "address": "1 Jelebu Rd, Singapore 677743",
+    "latitude": "1.3781",
+    "longitude": "103.7642"
   }
 ]

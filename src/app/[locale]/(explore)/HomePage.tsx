@@ -14,7 +14,7 @@ type Props = {
   facilityTypesData: FacilityType[];
 };
 
-export default function ClientPage({
+export default function HomePage({
   locationsData,
   facilitiesData,
   facilityTypesData,

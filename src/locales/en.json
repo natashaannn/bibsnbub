@@ -2,6 +2,9 @@
   "Index": {
     "meta_title": "Welcome to Bibs & Bub",
     "meta_description": "An app to help parents locate nursing and changing rooms!"
+  },
+  "FacilityPage": {
+    "meta_title": "Facility Page",
+    "meta_description": "Details about the selected facility."
   }
-
 }

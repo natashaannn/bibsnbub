@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
-import ClientPage from './ClientPage';
+import HomePage from './HomePage';
 
 export default async function Page() {
   const supabase = await createClient();
@@ -20,7 +20,7 @@ export default async function Page() {
   };
 
   return (
-    <ClientPage
+    <HomePage
       locationsData={locationsData || []}
       facilitiesData={facilitiesData || []}
       facilityTypesData={facilityTypesData || []}

@@ -7,6 +7,7 @@ import SearchBar from '@/components/SearchBar';
 import { calculateDistance } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 type Props = {
   locationsData: Location[];
@@ -25,16 +26,48 @@ export default function HomePage({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    setUserLocation({ latitude: 1.3521, longitude: 103.8198 }); // Default location
+    setUserLocation({ latitude: 1.287953, longitude: 103.851784 }); // Default location center of Singapore
   }, []);
 
   const handleSearch = (latitude: number, longitude: number) => {
+    setUserLocation({ latitude, longitude });
+
     const sorted = [...locationsData].sort((a, b) => {
       const distanceA = calculateDistance(latitude, longitude, a.latitude, a.longitude);
       const distanceB = calculateDistance(latitude, longitude, b.latitude, b.longitude);
       return distanceA - distanceB;
     });
+
     setSortedLocations(sorted);
+  };
+
+  const handleUseCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      toast.warning('Geolocation Not Supported', {
+        description: 'Geolocation is not supported by your browser.',
+      });
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        handleSearch(latitude, longitude);
+        toast.success('Location Updated', {
+          description: 'Your location has been updated to your current location.',
+        });
+      },
+      (error) => {
+        console.error('Error fetching current location:', error);
+        toast.warning('Error', {
+          description: 'Unable to retrieve your location. Please try again.',
+          action: {
+            label: 'Try Again',
+            onClick: () => handleUseCurrentLocation(),
+          },
+        });
+      },
+    );
   };
 
   const filteredFacilities = facilitiesData?.filter((facility) => {
@@ -54,12 +87,8 @@ export default function HomePage({
       </div>
 
       <SearchBar
-        onSearch={handleSearch}
-        onUseCurrentLocation={() => {
-          if (userLocation) {
-            handleSearch(userLocation.latitude, userLocation.longitude);
-          }
-        }}
+        onSearchAction={handleSearch}
+        onUseCurrentLocationAction={handleUseCurrentLocation}
       />
       <CategoryScroller onCategorySelect={setSelectedCategory} />
 
@@ -83,8 +112,8 @@ export default function HomePage({
               location={location}
               facility={facility}
               facilityType={facilityType}
-              latitude={userLocation?.latitude ?? 0}
-              longitude={userLocation?.longitude ?? 0}
+              userLatitude={userLocation?.latitude ?? 0}
+              userLongitude={userLocation?.longitude ?? 0}
             />
           );
         });

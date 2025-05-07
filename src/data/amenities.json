@@ -1,9 +1,10 @@
 [
-  { "name": "Sink", "description": "Water sink available" },
-  { "name": "Hot Water Dispenser", "description": "Provides hot water for feeding" },
-  { "name": "Changing Table", "description": "Flat surface for diaper changes" },
-  { "name": "Nursing Chair", "description": "Comfortable chair for nursing" },
-  { "name": "Electrical Outlet", "description": "Power socket for breast pumps" },
-  { "name": "Lactation Room", "description": "Private space for breastfeeding or pumping" },
-  { "name": "Diaper Changing Station", "description": "Wall-mounted or room changing station" }
+  { "name": "Sink", "description": "A sink for washing hands", "isMultipleApplicable": true },
+  { "name": "Hot Water Dispenser", "description": "A dispenser for hot water", "isMultipleApplicable": true },
+  { "name": "Cold Water Dispenser", "description": "A dispenser for cold water", "isMultipleApplicable": true },
+  { "name": "Diaper Changing Station", "description": "A station for changing diapers", "isMultipleApplicable": true },
+  { "name": "WiFi", "description": "Wireless internet access", "isMultipleApplicable": false },
+  { "name": "Trash Bin", "description": "A bin for disposing trash", "isMultipleApplicable": true },
+  { "name": "Electrical Outlet", "description": "An outlet for charging devices", "isMultipleApplicable": true },
+  { "name": "Lactation Room", "description": "A private room for nursing mothers", "isMultipleApplicable": true }
 ]

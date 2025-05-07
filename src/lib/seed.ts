@@ -8,7 +8,6 @@ import {
   facilityTypes,
   locations,
 } from '@/models/Schema';
-import { sql } from 'drizzle-orm';
 
 async function loadJSON<T>(filename: string): Promise<T> {
   const filePath = path.join(process.cwd(), 'src/data', filename);
@@ -16,28 +15,12 @@ async function loadJSON<T>(filename: string): Promise<T> {
   return JSON.parse(raw);
 }
 
-async function resetSequences() {
-  await db.execute(sql`ALTER SEQUENCE locations_id_seq RESTART WITH 1`);
-  await db.execute(sql`ALTER SEQUENCE facility_types_id_seq RESTART WITH 1`);
-  await db.execute(sql`ALTER SEQUENCE amenities_id_seq RESTART WITH 1`);
-  await db.execute(sql`ALTER SEQUENCE facilities_id_seq RESTART WITH 1`);
-}
-
 async function seed() {
-  console.warn('🧼 Clearing tables...');
-  await db.delete(facilityAmenities);
-  await db.delete(facilities);
-  await db.delete(facilityTypes);
-  await db.delete(amenities);
-  await db.delete(locations);
-
-  await resetSequences();
-
   console.warn('🌱 Seeding data...');
 
   const locationData = await loadJSON<any[]>('locations.json');
   const insertedLocations = await db.insert(locations).values(locationData).returning();
-  const locationMap = Object.fromEntries(insertedLocations.map(l => [l.name, l.id]));
+  const locationMap = Object.fromEntries(insertedLocations.map(l => [l.address, l.id]));
 
   const facilityTypeData = await loadJSON<any[]>('facilityTypes.json');
   const insertedTypes = await db.insert(facilityTypes).values(facilityTypeData).returning();
@@ -50,11 +33,11 @@ async function seed() {
   const facilityData = await loadJSON<any[]>('facilities.json');
   const facilitiesToInsert = facilityData
     .map((f) => {
-      const locationId = locationMap[f.locationName];
+      const locationId = locationMap[f.locationAddress];
       const facilityTypeId = typeMap[f.facilityTypeName];
 
       if (locationId === undefined) {
-        console.error(`Unknown locationName: ${f.locationName}`);
+        console.error(`Unknown locationAddress: ${f.locationAddress}`);
       }
       if (facilityTypeId === undefined) {
         console.error(`Unknown facilityTypeName: ${f.facilityTypeName}`);
@@ -81,9 +64,10 @@ async function seed() {
   const facilityAmenityData = await loadJSON<any[]>('facilityAmenities.json');
   await db.insert(facilityAmenities).values(
     facilityAmenityData.flatMap(f =>
-      f.amenities.map((a: string) => ({
+      f.amenities.map((a: { name: string; quantity: number }) => ({
         facilityId: facilityMap[f.facilityDesc],
-        amenityId: amenityMap[a],
+        amenityId: amenityMap[a.name],
+        quantity: a.quantity,
       })),
     ),
   );

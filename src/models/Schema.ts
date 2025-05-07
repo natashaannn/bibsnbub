@@ -3,11 +3,13 @@ import { boolean, integer, numeric, pgTable, primaryKey, serial, text, timestamp
 // --- Location Table ---
 export const locations = pgTable('locations', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 255 }).notNull(),
+  building: varchar('building', { length: 255 }),
+  block: varchar('block', { length: 50 }),
+  road: varchar('road', { length: 255 }).notNull(),
   address: text('address').notNull(),
-  latitude: numeric('latitude', { precision: 9, scale: 6 }).notNull(),
-  longitude: numeric('longitude', { precision: 9, scale: 6 }).notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  postalCode: varchar('postal_code', { length: 10 }),
+  latitude: numeric('latitude', { precision: 10, scale: 8 }).notNull(),
+  longitude: numeric('longitude', { precision: 11, scale: 8 }).notNull(),
 });
 
 // --- Facility Types ---
@@ -22,7 +24,7 @@ export const amenities = pgTable('amenities', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   description: text('description'),
-  isMultipleApplicable: boolean('is_multiple_applicable').default(true), // New column
+  isMultipleApplicable: boolean('is_multiple_applicable').default(true),
 });
 
 // --- Facilities ---
@@ -34,6 +36,7 @@ export const facilities = pgTable('facilities', {
   isAccessible: boolean('is_accessible').default(false),
   description: text('description'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
   hasDiaperChangingStation: boolean('has_diaper_changing_station').default(true),
   hasLactationRoom: boolean('has_lactation_room').default(false),
 });

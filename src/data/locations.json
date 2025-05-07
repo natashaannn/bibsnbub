@@ -1,20 +1,20 @@
 [
   {
-    "name": "Hillion Mall",
-    "address": "17 Petir Rd, Singapore 678278",
-    "latitude": "1.3793",
-    "longitude": "103.7633"
+    "building": "Hillion Mall",
+    "block": 17,
+    "road": "Petir Rd",
+    "address": "Hillion Mall, 17 Petir Rd, Singapore 678278",
+    "postalCode": "678278",
+    "latitude": 1.3628,
+    "longitude": 103.7472
   },
   {
-    "name": "Junction 10",
-    "address": "1 Woodlands Rd, Singapore 677899",
-    "latitude": "1.3784",
-    "longitude": "103.7622"
-  },
-  {
-    "name": "Bukit Panjang Plaza",
-    "address": "1 Jelebu Rd, Singapore 677743",
-    "latitude": "1.3781",
-    "longitude": "103.7642"
+    "building": "The Shoppes at Marina Bay Sands",
+    "block": 10,
+    "road": "Bayfront Ave",
+    "address": "The Shoppes at Marina Bay Sands, 10 Bayfront Ave, Singapore 018956",
+    "postalCode": "018956",
+    "latitude": 1.2824,
+    "longitude": 103.8585
   }
 ]

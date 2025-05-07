@@ -17,11 +17,11 @@ type FacilityCardProps = {
   location: Location;
   facility: Facility;
   facilityType: FacilityType;
-  latitude: number;
-  longitude: number;
+  userLatitude: number;
+  userLongitude: number;
 };
 
-const FacilityCard: React.FC<FacilityCardProps> = ({ location, facility, facilityType, latitude, longitude }) => {
+const FacilityCard: React.FC<FacilityCardProps> = ({ location, facility, facilityType, userLatitude: latitude, userLongitude: longitude }) => {
   const getFacilityIcon = (facilityTypeName: string) => {
     switch (facilityTypeName) {
       case 'Lactation Room':
@@ -54,7 +54,15 @@ const FacilityCard: React.FC<FacilityCardProps> = ({ location, facility, facilit
 
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold">{location.name}</h2>
+            <h2>
+              {
+                location.building
+                  ? location.building
+                  : location.block
+                    ? `${location.block} ${location.road}`
+                    : location.address
+              }
+            </h2>
             {facility.floor && <Badge>{facility.floor}</Badge>}
           </div>
 

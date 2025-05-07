@@ -54,27 +54,11 @@ export default async function Page(props: FacilityPageProps) {
       is_accessible,
       has_diaper_changing_station,
       has_lactation_room,
-      location:location_id (
-        id,
-        name,
-        address,
-        latitude,
-        longitude,
-        created_at
-      ),
-      facility_type:facility_type_id (
-        id,
-        name,
-        description
-      ),
+      location:location_id (*),
+      facility_type:facility_type_id (*),
       facility_amenities:facility_amenities (
         quantity,
-        amenity:amenity_id (
-          id,
-          name,
-          description,
-          is_multiple_applicable
-        )
+        amenity:amenity_id (*)
       )
     `)
     .eq('id', id)

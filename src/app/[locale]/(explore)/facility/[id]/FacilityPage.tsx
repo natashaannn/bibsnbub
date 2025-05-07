@@ -20,7 +20,6 @@ type FacilityDetailsProps = {
 const FacilityPage: React.FC<FacilityDetailsProps> = ({ facility }) => {
   const location = facility.location || {
     id: 0,
-    name: 'Unknown Location',
     address: 'Unknown Address',
     latitude: 0,
     longitude: 0,
@@ -36,7 +35,15 @@ const FacilityPage: React.FC<FacilityDetailsProps> = ({ facility }) => {
     <div className="container mx-auto py-8">
       {/* Facility Name and Floor Badge */}
       <div className="flex items-center gap-2">
-        <h1 className="text-3xl font-bold">{location.name}</h1>
+        <h1 className="text-3xl font-bold">
+          {
+            location.building
+              ? location.building
+              : location.block
+                ? `${location.block} ${location.road}`
+                : location.address
+          }
+        </h1>
         {facility.floor && <Badge className="mt-1 text-1xl">{facility.floor}</Badge>}
       </div>
       <p className="text-gray-600 mt-2">{facility.description}</p>

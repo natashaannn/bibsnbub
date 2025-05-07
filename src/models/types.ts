@@ -1,11 +1,6 @@
 export type Location = {
   id: number;
-  name: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-  createdAt: Date;
-};
+} & Address;
 
 export type Amenity = {
   id: number;
@@ -29,4 +24,13 @@ export type Facility = {
 export type FacilityType = {
   id: number;
   name: string;
+};
+
+export type Address = {
+  building?: string;
+  block?: string;
+  road?: string;
+  address: string;
+  latitude: number;
+  longitude: number;
 };

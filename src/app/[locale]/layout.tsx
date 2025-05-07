@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Toaster } from '@/components/ui/sonner';
 import arcjet, { detectBot, request } from '@/libs/Arcjet';
 import { Env } from '@/libs/Env';
 import { routing } from '@/libs/i18nNavigation';
@@ -94,6 +95,7 @@ export default async function RootLayout(props: {
           <div className="min-h-screen flex flex-col items-center justify-center p-4">
             {props.children}
           </div>
+          <Toaster />
         </NextIntlClientProvider>
       </body>
     </html>

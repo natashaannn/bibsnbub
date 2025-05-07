@@ -4,7 +4,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { bottleBaby } from '@lucide/lab';
 import BabyChangingStationIcon from '@mui/icons-material/BabyChangingStation';
-import { Icon } from 'lucide-react';
+import { Baby, Icon } from 'lucide-react';
 import { useState } from 'react';
 
 type Category = {
@@ -14,6 +14,11 @@ type Category = {
 };
 
 const categories: Category[] = [
+  {
+    name: 'All',
+    label: 'All',
+    icon: <Baby className="w-5 h-5 text-gray-500" />,
+  },
   {
     name: 'Diaper Changing Station',
     label: 'Changing',
@@ -31,7 +36,7 @@ type CategoryScrollerProps = {
 };
 
 const CategoryScroller = ({ onCategorySelect }: CategoryScrollerProps) => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('All');
 
   const handleCategoryClick = (category: string) => {
     const newCategory = selectedCategory === category ? null : category;

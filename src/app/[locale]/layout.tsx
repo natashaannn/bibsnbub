@@ -91,8 +91,9 @@ export default async function RootLayout(props: {
           locale={locale}
           messages={messages}
         >
-          {props.children}
-
+          <div className="min-h-screen flex flex-col items-center justify-center p-4">
+            {props.children}
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -1,3 +1,12 @@
+# [2.2.0](https://github.com/natashaannn/bibsnbub/compare/v2.1.0...v2.2.0) (2025-05-07)
+
+
+### Features
+
+* **auth:** add authentication flow with clerk ([a677209](https://github.com/natashaannn/bibsnbub/commit/a6772095f725d6d6805d7326548176ba7c77de72))
+* **explore:** add shared layout and all facilities category ([5896e25](https://github.com/natashaannn/bibsnbub/commit/5896e253c72a944a738f8f62dba7e6e83ee47e8b))
+* **explore:** standardize address and add usecurrentlocation functionality ([647b309](https://github.com/natashaannn/bibsnbub/commit/647b3095a094270801d0a600f1bc8709fa233183))
+
 # [2.1.0](https://github.com/natashaannn/bibsnbub/compare/v2.0.0...v2.1.0) (2025-05-06)
 
 

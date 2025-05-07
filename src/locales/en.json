@@ -6,5 +6,27 @@
   "FacilityPage": {
     "meta_title": "Facility Page",
     "meta_description": "Details about the selected facility."
+  },
+  "SignIn": {
+    "meta_title": "Sign In",
+    "meta_description": "Sign in to your account."
+  },
+  "SignUp": {
+    "meta_title": "Sign Up",
+    "meta_description": "Create a new account."
+  },
+  "UserProfile": {
+    "meta_title": "User Profile",
+    "meta_description": "View and edit your profile."
+  },
+  "Navigation": {
+    "meta_title": "Navigation",
+    "meta_description": "Overview of your account and activities.",
+    "user_profile_link": "User Profile",
+    "sign_out": "Sign Out",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "logo": "Bibs & Bub",
+    "explore": "Explore"
   }
 }

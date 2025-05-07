@@ -1,0 +1,32 @@
+{
+  "Index": {
+    "meta_title": "欢迎来到 Bibs & Bub",
+    "meta_description": "一个帮助父母寻找哺乳室和换尿布室的应用程序！"
+  },
+  "FacilityPage": {
+    "meta_title": "设施页面",
+    "meta_description": "所选设施的详细信息。"
+  },
+  "SignIn": {
+    "meta_title": "登录",
+    "meta_description": "登录到您的账户。"
+  },
+  "SignUp": {
+    "meta_title": "注册",
+    "meta_description": "创建一个新账户。"
+  },
+  "UserProfile": {
+    "meta_title": "用户资料",
+    "meta_description": "查看和编辑您的个人资料。"
+  },
+  "Navigation": {
+    "meta_title": "仪表板",
+    "meta_description": "您的账户和活动概览。",
+    "user_profile_link": "用户资料",
+    "sign_out": "登出",
+    "sign_in": "登录",
+    "sign_up": "注册",
+    "logo": "Bibs & Bub",
+    "explore": "探索"
+  }
+}

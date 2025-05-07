@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/sonner';
 import arcjet, { detectBot, request } from '@/libs/Arcjet';
 import { Env } from '@/libs/Env';
-import { routing } from '@/libs/i18nNavigation';
+import { routing } from '@/libs/i18nRouting';
+import { ClerkProvider } from '@clerk/nextjs';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import AuthWrapper from '../../components/AuthWrapper';
 import '@/styles/global.css';
 
 export const metadata: Metadata = {
@@ -88,15 +90,19 @@ export default async function RootLayout(props: {
   return (
     <html lang={locale}>
       <body suppressHydrationWarning>
-        <NextIntlClientProvider
-          locale={locale}
-          messages={messages}
-        >
-          <div className="min-h-screen flex flex-col items-center justify-center p-4">
-            {props.children}
-          </div>
-          <Toaster />
-        </NextIntlClientProvider>
+        <ClerkProvider>
+          <AuthWrapper
+            currentLocale={locale}
+            availableLocales={routing.locales}
+          >
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <div className="min-h-screen flex flex-col items-center justify-center p-4">
+                {props.children}
+              </div>
+              <Toaster />
+            </NextIntlClientProvider>
+          </AuthWrapper>
+        </ClerkProvider>
       </body>
     </html>
   );

@@ -1,9 +1,17 @@
 'use client';
-import { SignOutButton } from '@clerk/nextjs';
-import { Globe, Menu } from 'lucide-react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { SignOutButton, useUser } from '@clerk/nextjs';
+import { Globe } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 type DesktopNavigationProps = {
   isLoggedIn: boolean;
@@ -16,23 +24,11 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   isLoggedIn,
   currentLocale,
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [localeMenuOpen, setLocaleMenuOpen] = useState(false);
+  const { user } = useUser();
   const router = useRouter();
-
-  const handleLocaleMenuOpen = () => {
-    setLocaleMenuOpen(!localeMenuOpen);
-    setMenuOpen(false);
-  };
-
-  const handleMenuOpen = () => {
-    setMenuOpen(!menuOpen);
-    setLocaleMenuOpen(false);
-  };
 
   const handleLocaleChange = (locale: string) => {
     router.push(`/${locale}`);
-    setLocaleMenuOpen(false);
   };
 
   return (
@@ -43,82 +39,82 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
           Bibs&Bub
         </Link>
 
-        {/* Locale Selector */}
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <button
-              type="button"
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
-              onClick={handleLocaleMenuOpen}
-            >
+        {/* Navigation Menu */}
+        <NavigationMenu className="ml-auto flex items-center gap-4">
+          {/* Locale Selector */}
+          <NavigationMenuItem className=" list-none">
+            <NavigationMenuTrigger className="flex items-center gap-2">
               <Globe className="h-5 w-5" />
               <span>{currentLocale.toUpperCase()}</span>
-            </button>
-
-            {localeMenuOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg">
-                {availableLocales.map(locale => (
-                  <button
-                    key={locale}
-                    type="button"
-                    className={`block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 ${
-                      locale === currentLocale ? 'font-bold' : ''
-                    }`}
-                    onClick={() => handleLocaleChange(locale)}
-                  >
-                    {locale.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="w-[250px] gap-3 p-4 md:w-[250px] md:grid-cols-2 lg:w-[250px] ">
+              {availableLocales.map(locale => (
+                <NavigationMenuLink
+                  key={locale}
+                  onClick={() => handleLocaleChange(locale)}
+                >
+                  {locale.toUpperCase()}
+                </NavigationMenuLink>
+              ))}
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
           {/* User Menu */}
-          <div className="relative">
-            <button
-              type="button"
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
-              onClick={handleMenuOpen}
-            >
-              <Menu className="h-5 w-5" />
-              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                {/* Avatar Placeholder */}
-                <span className="text-sm font-bold text-gray-700">A</span>
-              </div>
-            </button>
-
-            {menuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-                {!isLoggedIn
-                  ? (
-                      <>
-                        <Link href="/sign-up" className="block px-4 py-2 text-black-700 hover:bg-gray-100">
-                          Sign Up
-                        </Link>
-                        <Link href="/sign-in" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                          Log In
-                        </Link>
-                      </>
-                    )
-                  : (
-                      <>
-                        <Link href="/user-profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                          Profile
-                        </Link>
-                        <SignOutButton>
-                          <button
-                            type="button"
-                            className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                          >
-                            Log Out
-                          </button>
-                        </SignOutButton>
-                      </>
-                    )}
-              </div>
-            )}
-          </div>
-        </div>
+          <NavigationMenuItem className="list-none">
+            <NavigationMenuTrigger className="flex items-center gap-2">
+              {isLoggedIn
+                ? (
+                    <>
+                      <Avatar className="h-8 w-8 rounded-lg">
+                        <AvatarImage
+                          src={user?.imageUrl ?? ''}
+                          alt={user?.firstName ?? 'Guest'}
+                        />
+                        <AvatarFallback className="rounded-lg">?</AvatarFallback>
+                      </Avatar>
+                      <div className="grid flex-1 text-left text-sm leading-tight">
+                        <span className="truncate font-semibold">
+                          {user?.firstName ?? 'Guest'}
+                        </span>
+                      </div>
+                    </>
+                  )
+                : (
+                    <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                      <Avatar className="h-8 w-8 rounded-lg">
+                        <AvatarFallback className="rounded-lg">G</AvatarFallback>
+                      </Avatar>
+                      <span className="truncate font-semibold">Guest</span>
+                    </div>
+                  )}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="w-[250px] gap-3 p-4 md:w-[250px] md:grid-cols-2 lg:w-[250px] ">
+              {isLoggedIn
+                ? (
+                    <>
+                      <NavigationMenuLink href="/user-profile">
+                        Profile
+                      </NavigationMenuLink>
+                      <SignOutButton>
+                        <NavigationMenuLink>
+                          Log Out
+                        </NavigationMenuLink>
+                      </SignOutButton>
+                    </>
+                  )
+                : (
+                    <>
+                      <NavigationMenuLink href="/sign-up">
+                        Sign Up
+                      </NavigationMenuLink>
+                      <NavigationMenuLink href="/sign-in">
+                        Log In
+                      </NavigationMenuLink>
+                    </>
+                  )}
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenu>
       </div>
     </nav>
   );

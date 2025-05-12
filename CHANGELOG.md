@@ -1,3 +1,11 @@
+# [2.3.0](https://github.com/natashaannn/bibsnbub/compare/v2.2.0...v2.3.0) (2025-05-12)
+
+
+### Features
+
+* **add:** create add facility page and flow ([bc0317e](https://github.com/natashaannn/bibsnbub/commit/bc0317e2a32819d6f8cc593936615b89e3769e91))
+* **auth:** update desktop nav menu to shadcn component ([f90a4c2](https://github.com/natashaannn/bibsnbub/commit/f90a4c20438971151d5a259b2966b101ddaf523a))
+
 # [2.2.0](https://github.com/natashaannn/bibsnbub/compare/v2.1.0...v2.2.0) (2025-05-07)
 
 

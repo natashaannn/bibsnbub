@@ -52,6 +52,7 @@ async function seed() {
             description: f.description,
             hasDiaperChangingStation: f.hasDiaperChangingStation ?? false,
             hasLactationRoom: f.hasLactationRoom ?? false,
+            createdBy: 'system', // Add a default or dynamic value for createdBy
           }
         : null;
     })

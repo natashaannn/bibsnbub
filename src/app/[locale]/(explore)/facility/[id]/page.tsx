@@ -49,6 +49,9 @@ export default async function Page(props: FacilityPageProps) {
     .from('facilities')
     .select(`
       id,
+      created_at,
+      created_by,
+      how_to_access,
       description,
       floor,
       is_accessible,

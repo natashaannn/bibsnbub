@@ -9,7 +9,7 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { SignOutButton, useUser } from '@clerk/nextjs';
-import { Globe } from 'lucide-react';
+import { Globe, MapPinPlus } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -41,6 +41,15 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 
         {/* Navigation Menu */}
         <NavigationMenu className="ml-auto flex items-center gap-4">
+
+          {/* Add New Facility Button */}
+          <Link
+            href="/add"
+            className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+          >
+            <MapPinPlus className="h-5 w-5" />
+            <span>Add New</span>
+          </Link>
           {/* Locale Selector */}
           <NavigationMenuItem className=" list-none">
             <NavigationMenuTrigger className="flex items-center gap-2">

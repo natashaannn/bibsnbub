@@ -33,12 +33,13 @@ export const facilities = pgTable('facilities', {
   locationId: integer('location_id').notNull().references(() => locations.id, { onDelete: 'cascade' }),
   facilityTypeId: integer('facility_type_id').notNull().references(() => facilityTypes.id, { onDelete: 'cascade' }),
   floor: varchar('floor', { length: 50 }),
-  isAccessible: boolean('is_accessible').default(false),
   description: text('description'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
   hasDiaperChangingStation: boolean('has_diaper_changing_station').default(true),
   hasLactationRoom: boolean('has_lactation_room').default(false),
+  howToAccess: text('how_to_access'),
+  createdBy: varchar('created_by', { length: 255 }).notNull(), // Clerk user UUID
 });
 
 // --- Facility <-> Amenities Many-to-Many Join Table ---

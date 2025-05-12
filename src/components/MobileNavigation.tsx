@@ -1,5 +1,5 @@
 'use client';
-import { Globe, Home, User } from 'lucide-react';
+import { Globe, Home, MapPinPlus, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -66,6 +66,17 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
             </div>
           )}
         </div>
+
+        {/* Add */}
+        <Link
+          href={isLoggedIn ? '/add' : '/sign-in'}
+          className={`flex flex-col items-center ${
+            pathname === '/add' ? 'text-blue-500' : 'text-gray-500'
+          }`}
+        >
+          <MapPinPlus className="h-6 w-6" />
+          <span className="text-sm">Add</span>
+        </Link>
 
         {/* User Link */}
         <Link

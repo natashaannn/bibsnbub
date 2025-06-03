@@ -54,7 +54,6 @@ export default async function Page(props: FacilityPageProps) {
       how_to_access,
       description,
       floor,
-      is_accessible,
       has_diaper_changing_station,
       has_lactation_room,
       location:location_id (*),

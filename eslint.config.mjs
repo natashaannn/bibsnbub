@@ -23,6 +23,7 @@ export default antfu({
   ignores: [
     'migrations/**/*',
     'next-env.d.ts',
+    'src/components/ui/**.tsx',
   ],
 }, jsxA11y.flatConfigs.recommended, {
   plugins: {

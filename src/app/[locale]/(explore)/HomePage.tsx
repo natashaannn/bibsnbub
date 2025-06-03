@@ -1,10 +1,11 @@
 'use client';
 
 import type { Facility, FacilityType, Location } from '@/models/types';
+import type { Address } from '@/types/Address'; // Import Address type
 import CategoryScroller from '@/components/CategoryScroller';
 import FacilityCard from '@/components/FacilityCard';
 import SearchBar from '@/components/SearchBar';
-import { calculateDistance } from '@/lib/utils';
+import { calculateDistance, handleUseCurrentLocation } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -29,7 +30,8 @@ export default function HomePage({
     setUserLocation({ latitude: 1.287953, longitude: 103.851784 }); // Default location center of Singapore
   }, []);
 
-  const handleSearch = (latitude: number, longitude: number) => {
+  const handleSearch = (address: Address) => {
+    const { latitude, longitude } = address;
     setUserLocation({ latitude, longitude });
 
     const sorted = [...locationsData].sort((a, b) => {
@@ -39,35 +41,6 @@ export default function HomePage({
     });
 
     setSortedLocations(sorted);
-  };
-
-  const handleUseCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      toast.warning('Geolocation Not Supported', {
-        description: 'Geolocation is not supported by your browser.',
-      });
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        handleSearch(latitude, longitude);
-        toast.success('Location Updated', {
-          description: 'Your location has been updated to your current location.',
-        });
-      },
-      (error) => {
-        console.error('Error fetching current location:', error);
-        toast.warning('Error', {
-          description: 'Unable to retrieve your location. Please try again.',
-          action: {
-            label: 'Try Again',
-            onClick: () => handleUseCurrentLocation(),
-          },
-        });
-      },
-    );
   };
 
   const filteredFacilities = facilitiesData?.filter((facility) => {
@@ -87,8 +60,12 @@ export default function HomePage({
       </div>
 
       <SearchBar
-        onSearchAction={handleSearch}
-        onUseCurrentLocationAction={handleUseCurrentLocation}
+        onSearchAction={handleSearch} // Pass handleSearch to SearchBar
+        onUseCurrentLocationAction={() =>
+          handleUseCurrentLocation(
+            (latitude, longitude) => handleSearch({ latitude, longitude } as Address), // Pass Address object
+            () => toast.warning('Unable to retrieve your location. Please try again.'),
+          )}
       />
       <CategoryScroller onCategorySelect={setSelectedCategory} />
 

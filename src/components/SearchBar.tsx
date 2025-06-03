@@ -1,4 +1,5 @@
 'use client';
+
 import type { Address } from '@/types/Address';
 import type { OneMapApiResponse } from '@/types/OneMap';
 import {
@@ -10,22 +11,28 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { mapOneMapToAddress } from '@/utils/mapOneMapToAddress';
 import { Navigation, SearchX } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type SearchBarProps = {
-  onSearchAction: (latitude: number, longitude: number) => void;
+  onSearchAction: (locationDetails: Address) => void;
   onUseCurrentLocationAction: () => void;
+  initialLocation?: Address;
 };
 
-export const SearchBar = ({ onSearchAction, onUseCurrentLocationAction }: SearchBarProps) => {
-  const [location, setLocation] = useState('');
+export const SearchBar: React.FC<SearchBarProps> = ({ onSearchAction, onUseCurrentLocationAction, initialLocation }) => {
+  const [location, setLocation] = useState<string>(initialLocation?.address || ''); // Initialize with initialLocation if provided
   const [suggestions, setSuggestions] = useState<Address[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isUsingCurrentLocation, setIsUsingCurrentLocation] = useState(false);
 
   const authToken = process.env.ONEMAP_API_KEY || '';
+
+  useEffect(() => {
+    if (initialLocation) {
+      setLocation(initialLocation.address || '');
+    }
+  }, [initialLocation]);
 
   const fetchSuggestions = async (query: string): Promise<Address[]> => {
     if (!query.trim()) {
@@ -46,7 +53,15 @@ export const SearchBar = ({ onSearchAction, onUseCurrentLocationAction }: Search
       const data: OneMapApiResponse = await response.json();
 
       if (data.results) {
-        const mappedSuggestions = data.results.map(mapOneMapToAddress);
+        const mappedSuggestions = data.results.map((result: any) => ({
+          building: result.BUILDING || '',
+          block: result.BLK_NO || '',
+          road: result.ROAD_NAME || '',
+          address: result.ADDRESS || '',
+          postalCode: result.POSTAL || '',
+          latitude: Number.parseFloat(result.LATITUDE),
+          longitude: Number.parseFloat(result.LONGITUDE),
+        }));
         setSuggestions(mappedSuggestions);
       } else {
         setSuggestions([]);
@@ -58,10 +73,10 @@ export const SearchBar = ({ onSearchAction, onUseCurrentLocationAction }: Search
     return [];
   };
 
-  const handleSuggestionClick = (latitude: number, longitude: number, address: string) => {
-    setLocation(address);
+  const handleSuggestionClick = (locationDetails: Address) => {
+    setLocation(locationDetails.address);
     setIsUsingCurrentLocation(false);
-    onSearchAction(latitude, longitude);
+    onSearchAction(locationDetails);
     setSuggestions([]);
     setIsOpen(false);
   };
@@ -136,7 +151,7 @@ export const SearchBar = ({ onSearchAction, onUseCurrentLocationAction }: Search
                   suggestions.map(suggestion => (
                     <CommandItem
                       key={suggestion.address}
-                      onSelect={() => handleSuggestionClick(suggestion.latitude, suggestion.longitude, suggestion.address)}
+                      onSelect={() => handleSuggestionClick(suggestion)}
                       className="flex items-center gap-2 cursor-pointer rounded-md px-2 py-2 text-sm hover:bg-gray-100"
                     >
                       {suggestion.address}

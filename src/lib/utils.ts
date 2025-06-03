@@ -1,6 +1,7 @@
 import type { ClassValue } from 'clsx';
 import { clsx } from 'clsx';
 import { getTranslations } from 'next-intl/server';
+import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -28,3 +29,39 @@ export const calculateDistance = (userLat: number, userLon: number, locLat: numb
 export async function fetchTranslations(locale: string) {
   return await getTranslations({ locale, namespace: 'Index' });
 }
+
+export const handleUseCurrentLocation = async (
+  onLocationSuccess: (latitude: number, longitude: number) => void,
+  onLocationError?: () => void,
+) => {
+  if (!navigator.geolocation) {
+    toast.warning('Geolocation Not Supported', {
+      description: 'Geolocation is not supported by your browser.',
+    });
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      onLocationSuccess(latitude, longitude);
+      toast.success('Location Updated', {
+        description: 'Your location has been updated to your current location.',
+      });
+    },
+    (error) => {
+      console.error('Error fetching current location:', error);
+      toast.warning('Error', {
+        description: 'Unable to retrieve your location. Please try again.',
+        action: {
+          label: 'Try Again',
+          onClick: () => {
+            if (onLocationError) {
+              onLocationError();
+            }
+          },
+        },
+      });
+    },
+  );
+};

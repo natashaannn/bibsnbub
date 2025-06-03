@@ -40,16 +40,8 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
         </Link>
 
         {/* Navigation Menu */}
-        <NavigationMenu className="ml-auto flex items-center gap-4">
+        <NavigationMenu className="ml-auto flex items-center gap-1">
 
-          {/* Add New Facility Button */}
-          <Link
-            href="/add"
-            className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
-          >
-            <MapPinPlus className="h-5 w-5" />
-            <span>Add New</span>
-          </Link>
           {/* Locale Selector */}
           <NavigationMenuItem className=" list-none">
             <NavigationMenuTrigger className="flex items-center gap-2">
@@ -70,7 +62,7 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 
           {/* User Menu */}
           <NavigationMenuItem className="list-none">
-            <NavigationMenuTrigger className="flex items-center gap-2">
+            <NavigationMenuTrigger className="flex items-center">
               {isLoggedIn
                 ? (
                     <>
@@ -124,6 +116,15 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
             </NavigationMenuContent>
           </NavigationMenuItem>
         </NavigationMenu>
+
+        {/* Add New Facility Button */}
+        <Link
+          href="/add"
+          className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200"
+        >
+          <MapPinPlus className="h-5 w-5" />
+          <span>Add new</span>
+        </Link>
       </div>
     </nav>
   );

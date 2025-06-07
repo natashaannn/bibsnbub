@@ -61,6 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         has_diaper_changing_station: formData.hasDiaperChangingStation,
         has_lactation_room: formData.hasLactationRoom,
         how_to_access: formData.howToAccess,
+        females_only: formData.femalesOnly,
         created_by: userId,
       })
       .select('id')

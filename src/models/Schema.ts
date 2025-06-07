@@ -16,7 +16,6 @@ export const locations = pgTable('locations', {
 export const facilityTypes = pgTable('facility_types', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
-  description: text('description'),
 });
 
 // --- Amenities ---
@@ -40,6 +39,7 @@ export const facilities = pgTable('facilities', {
   hasLactationRoom: boolean('has_lactation_room').default(false),
   howToAccess: text('how_to_access'),
   createdBy: varchar('created_by', { length: 255 }).notNull(), // Clerk user UUID
+  femalesOnly: boolean('females_only').default(false),
 });
 
 // --- Facility <-> Amenities Many-to-Many Join Table ---

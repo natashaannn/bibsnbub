@@ -19,7 +19,10 @@ const SelectFacilityType: React.FC<SelectFacilityTypeProps> = ({ facilityTypeId,
             onClick={() => setFacilityTypeId(type.id)}
             className="whitespace-normal text-center px-4 py-2"
           >
-            {type.name}
+            <div>
+              <p className="font-semibold">{type.name}</p>
+              {' '}
+            </div>
           </Button>
         ))}
       </div>

@@ -35,6 +35,7 @@ export default function AddFacilityPage({ amenities, facilityTypes }: AddFacilit
     hasDiaperChangingStation: false,
     hasLactationRoom: false,
     howToAccess: '',
+    femalesOnly: false,
   });
 
   const { isSignedIn, userId } = useAuth();

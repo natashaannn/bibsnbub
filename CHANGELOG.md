@@ -1,3 +1,11 @@
+# [2.5.0](https://github.com/natashaannn/bibsnbub/compare/v2.4.0...v2.5.0) (2025-06-07)
+
+
+### Features
+
+* **add:** create add facility step by step flow and update navbar ([8fbbbb5](https://github.com/natashaannn/bibsnbub/commit/8fbbbb5e1b55ad77301e338c1f6d7ca31f51308d))
+* **add:** remove facility types desc and add how to access and females only to desc ([2612f14](https://github.com/natashaannn/bibsnbub/commit/2612f14194426001b6f8876826074590074936e0))
+
 # [2.4.0](https://github.com/natashaannn/bibsnbub/compare/v2.3.0...v2.4.0) (2025-06-03)
 
 

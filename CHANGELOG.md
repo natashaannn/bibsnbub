@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/natashaannn/bibsnbub/compare/v2.3.0...v2.4.0) (2025-06-03)
+
+
+### Features
+
+* **add:** create add facility step by step flow and update navbar ([904d2b9](https://github.com/natashaannn/bibsnbub/commit/904d2b96f54bd3e4707d6379e27a7d62dbea6d2e))
+
 # [2.3.0](https://github.com/natashaannn/bibsnbub/compare/v2.2.0...v2.3.0) (2025-05-12)
 
 
